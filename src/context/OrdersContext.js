@@ -1,36 +1,34 @@
 import React, { createContext, useState, useEffect } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import { getData, setData } from '../services/storageService';
 
 export const OrdersContext = createContext();
-
-const ORDERS_KEY = 'orders_data';
 
 export function OrdersProvider({ children }) {
   const [orders, setOrders] = useState([]);
 
   // 🔥 Load khi mở app
   useEffect(() => {
-    const load = async () => {
+    const loadOrders = async () => {
       try {
-        const stored = await SecureStore.getItemAsync(ORDERS_KEY);
-        if (stored) setOrders(JSON.parse(stored));
+        const stored = await getData('orders');
+        if (stored) setOrders(stored);
       } catch (e) {
-        console.log('Load orders error:', e);
+        console.log('[OrdersContext] loadOrders error:', e);
       }
     };
-    load();
+    loadOrders();
   }, []);
 
   // 💾 Lưu mỗi khi orders thay đổi
   useEffect(() => {
-    const save = async () => {
+    const saveOrders = async () => {
       try {
-        await SecureStore.setItemAsync(ORDERS_KEY, JSON.stringify(orders));
+        await setData('orders', orders);
       } catch (e) {
-        console.log('Save orders error:', e);
+        console.log('[OrdersContext] saveOrders error:', e);
       }
     };
-    save();
+    saveOrders();
   }, [orders]);
 
   // ➕ Thêm đơn hàng mới
@@ -42,7 +40,7 @@ export function OrdersProvider({ children }) {
       date: new Date().toISOString(),
       status: 'Accepted',
     };
-    setOrders((prev) => [newOrder, ...prev]); // mới nhất lên đầu
+    setOrders((prev) => [newOrder, ...prev]);
     return newOrder;
   };
 

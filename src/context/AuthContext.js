@@ -1,24 +1,7 @@
-import React, { createContext, useState, useEffect } from "react";
-import * as SecureStore from "expo-secure-store";
+import React, { createContext, useState, useEffect } from 'react';
+import { getData, setData, removeData } from '../services/storageService';
 
 export const AuthContext = createContext();
-
-// ✅ Helper wrapper giống AsyncStorage API
-const Storage = {
-  getItem: async (key) => {
-    try {
-      return await SecureStore.getItemAsync(key);
-    } catch {
-      return null;
-    }
-  },
-  setItem: async (key, value) => {
-    await SecureStore.setItemAsync(key, value);
-  },
-  removeItem: async (key) => {
-    await SecureStore.deleteItemAsync(key);
-  },
-};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -28,12 +11,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const storedUser = await Storage.getItem("user");
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        }
-      } catch (error) {
-        console.log("loadUser error:", error);
+        const stored = await getData('user');
+        if (stored) setUser(stored);
+      } catch (e) {
+        console.log('[AuthContext] loadUser error:', e);
       } finally {
         setLoading(false);
       }
@@ -41,22 +22,22 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
-  // ✅ Login — lưu user vào SecureStore
+  // ✅ Login
   const login = async (userData) => {
     try {
-      await Storage.setItem("user", JSON.stringify(userData));
+      await setData('user', userData);
       setUser(userData);
-    } catch (error) {
-      console.log("login error:", error);
+    } catch (e) {
+      console.log('[AuthContext] login error:', e);
     }
   };
 
-  // 🚪 Logout — xóa user khỏi SecureStore
+  // 🚪 Logout
   const logout = async () => {
     try {
-      await Storage.removeItem("user");
-    } catch (error) {
-      console.log("logout error:", error);
+      await removeData('user');
+    } catch (e) {
+      console.log('[AuthContext] logout error:', e);
     } finally {
       setUser(null);
     }

@@ -1,21 +1,19 @@
 import React, { createContext, useState, useEffect } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import { getData, setData, removeData } from '../services/storageService';
 
 export const CartContext = createContext();
-
-const CART_KEY = 'cart_data';
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-  // 🔥 Load giỏ hàng khi mở app
+  // 🔥 Load khi mở app
   useEffect(() => {
     const loadCart = async () => {
       try {
-        const stored = await SecureStore.getItemAsync(CART_KEY);
-        if (stored) setCart(JSON.parse(stored));
+        const stored = await getData('cart');
+        if (stored) setCart(stored);
       } catch (e) {
-        console.log('Load cart error:', e);
+        console.log('[CartContext] loadCart error:', e);
       }
     };
     loadCart();
@@ -25,9 +23,9 @@ export function CartProvider({ children }) {
   useEffect(() => {
     const saveCart = async () => {
       try {
-        await SecureStore.setItemAsync(CART_KEY, JSON.stringify(cart));
+        await setData('cart', cart);
       } catch (e) {
-        console.log('Save cart error:', e);
+        console.log('[CartContext] saveCart error:', e);
       }
     };
     saveCart();
@@ -46,7 +44,7 @@ export function CartProvider({ children }) {
     });
   };
 
-  // ➕➖ Tăng/giảm số lượng (qty = 0 thì tự xóa)
+  // ➕➖ Tăng/giảm số lượng
   const updateQty = (id, delta) => {
     setCart((prev) =>
       prev
@@ -60,10 +58,14 @@ export function CartProvider({ children }) {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // 🧹 Xóa toàn bộ giỏ (dùng sau khi đặt hàng)
+  // 🧹 Xóa toàn bộ giỏ
   const clearCart = async () => {
-    setCart([]);
-    await SecureStore.deleteItemAsync(CART_KEY);
+    try {
+      setCart([]);
+      await removeData('cart');
+    } catch (e) {
+      console.log('[CartContext] clearCart error:', e);
+    }
   };
 
   const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);

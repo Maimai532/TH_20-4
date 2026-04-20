@@ -60,11 +60,11 @@ function ShopStack() {
 function ExploreStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="ExploreScreen" component={Explore} />
-      <Stack.Screen name="SearchScreen" component={Search} />
-      <Stack.Screen name="FiltersScreen" component={Filters} />
-      <Stack.Screen name="BeveragesScreen" component={Beverages} />
-      <Stack.Screen name="ProductDetailFromExplore" component={ProductDetail} />
+      <Stack.Screen name="Explore" component={Explore} />
+      <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="Filters" component={Filters} />
+      <Stack.Screen name="Beverages" component={Beverages} />
+      <Stack.Screen name="ProductDetail" component={ProductDetail} />
     </Stack.Navigator>
   );
 }
@@ -83,7 +83,7 @@ function CartStack() {
 function FavoriteStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="FavoritesScreen" component={Favorites} />
+      <Stack.Screen name="Favorites" component={Favorites} />
     </Stack.Navigator>
   );
 }

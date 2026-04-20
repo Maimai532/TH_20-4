@@ -1,39 +1,37 @@
 import React, { createContext, useState, useEffect } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import { getData, setData } from '../services/storageService';
 
 export const FavoritesContext = createContext();
-
-const FAV_KEY = 'favorites_data';
 
 export function FavoritesProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
 
   // 🔥 Load khi mở app
   useEffect(() => {
-    const load = async () => {
+    const loadFavorites = async () => {
       try {
-        const stored = await SecureStore.getItemAsync(FAV_KEY);
-        if (stored) setFavorites(JSON.parse(stored));
+        const stored = await getData('favorites');
+        if (stored) setFavorites(stored);
       } catch (e) {
-        console.log('Load favorites error:', e);
+        console.log('[FavoritesContext] loadFavorites error:', e);
       }
     };
-    load();
+    loadFavorites();
   }, []);
 
   // 💾 Lưu mỗi khi favorites thay đổi
   useEffect(() => {
-    const save = async () => {
+    const saveFavorites = async () => {
       try {
-        await SecureStore.setItemAsync(FAV_KEY, JSON.stringify(favorites));
+        await setData('favorites', favorites);
       } catch (e) {
-        console.log('Save favorites error:', e);
+        console.log('[FavoritesContext] saveFavorites error:', e);
       }
     };
-    save();
+    saveFavorites();
   }, [favorites]);
 
-  // ➕ Thêm / ➖ Xóa toggle
+  // ❤️ Toggle thêm/xóa
   const toggleFavorite = (product) => {
     setFavorites((prev) => {
       const exists = prev.find((item) => item.id === product.id);
