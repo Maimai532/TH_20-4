@@ -1,7 +1,24 @@
 import React, { createContext, useState, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 
 export const AuthContext = createContext();
+
+// ✅ Helper wrapper giống AsyncStorage API
+const Storage = {
+  getItem: async (key) => {
+    try {
+      return await SecureStore.getItemAsync(key);
+    } catch {
+      return null;
+    }
+  },
+  setItem: async (key, value) => {
+    await SecureStore.setItemAsync(key, value);
+  },
+  removeItem: async (key) => {
+    await SecureStore.deleteItemAsync(key);
+  },
+};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -10,25 +27,39 @@ export const AuthProvider = ({ children }) => {
   // 🔥 Auto login khi mở app
   useEffect(() => {
     const loadUser = async () => {
-      const storedUser = await AsyncStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+      try {
+        const storedUser = await Storage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      } catch (error) {
+        console.log("loadUser error:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     loadUser();
   }, []);
 
-  // ✅ Login
+  // ✅ Login — lưu user vào SecureStore
   const login = async (userData) => {
-    await AsyncStorage.setItem("user", JSON.stringify(userData));
-    setUser(userData);
+    try {
+      await Storage.setItem("user", JSON.stringify(userData));
+      setUser(userData);
+    } catch (error) {
+      console.log("login error:", error);
+    }
   };
 
-  // 🚪 Logout
+  // 🚪 Logout — xóa user khỏi SecureStore
   const logout = async () => {
-    await AsyncStorage.removeItem("user");
-    setUser(null);
+    try {
+      await Storage.removeItem("user");
+    } catch (error) {
+      console.log("logout error:", error);
+    } finally {
+      setUser(null);
+    }
   };
 
   return (

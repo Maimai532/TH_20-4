@@ -3,11 +3,9 @@
     "name": "nectar",
     "slug": "nectar",
     "version": "1.0.0",
-
     "updates": {
       "enabled": false
     },
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -29,6 +27,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

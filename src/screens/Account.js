@@ -1,26 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity,
-  Image, ScrollView, StatusBar,
+  ScrollView, StatusBar,Image
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { AuthContext } from '../context/AuthContext';
 
 const MENU_ITEMS = [
-  { icon: 'receipt-outline',      label: 'Orders' },
-  { icon: 'person-outline',       label: 'My Details' },
-  { icon: 'location-outline',     label: 'Delivery Address' },
-  { icon: 'card-outline',         label: 'Payment Methods' },
-  { icon: 'pricetag-outline',     label: 'Promo Code' },
-  { icon: 'notifications-outline',label: 'Notifications' },
-  { icon: 'help-circle-outline',  label: 'Help' },
-  { icon: 'information-circle-outline', label: 'About' },
+  { icon: 'receipt-outline',            label: 'Orders',screen: 'Orders' },
+  { icon: 'person-outline',             label: 'My Details',       screen: null },
+  { icon: 'location-outline',           label: 'Delivery Address', screen: null },
+  { icon: 'card-outline',               label: 'Payment Methods',  screen: null },
+  { icon: 'pricetag-outline',           label: 'Promo Code',       screen: null },
+  { icon: 'notifications-outline',      label: 'Notifications',    screen: null },
+  { icon: 'help-circle-outline',        label: 'Help',             screen: null },
+  { icon: 'information-circle-outline', label: 'About',            screen: null },
 ];
 
 export default function Account({ navigation }) {
+  const { user, logout } = useContext(AuthContext);
+
+  const initial = user?.name?.charAt(0)?.toUpperCase() || 'U';
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-
       <ScrollView showsVerticalScrollIndicator={false}>
 
         {/* Profile */}
@@ -31,19 +35,24 @@ export default function Account({ navigation }) {
           />
           <View style={styles.profileInfo}>
             <View style={styles.nameRow}>
-              <Text style={styles.name}>Afsar Hossen</Text>
+              <Text style={styles.name}>{user?.name || 'User'}</Text>
               <TouchableOpacity style={styles.editBtn}>
                 <Ionicons name="pencil" size={14} color="#53B175" />
               </TouchableOpacity>
             </View>
-            <Text style={styles.email}>lmshuvo97@gmail.com</Text>
+            <Text style={styles.email}>{user?.email || ''}</Text>
           </View>
         </View>
 
         {/* Menu */}
         <View style={styles.menu}>
           {MENU_ITEMS.map((item, index) => (
-            <TouchableOpacity key={index} style={styles.menuRow} activeOpacity={0.7}>
+            <TouchableOpacity
+              key={index}
+              style={styles.menuRow}
+              activeOpacity={0.7}
+              onPress={() => item.screen && navigation.navigate(item.screen)}
+            >
               <View style={styles.menuLeft}>
                 <Ionicons name={item.icon} size={22} color="#181725" style={styles.menuIcon} />
                 <Text style={styles.menuLabel}>{item.label}</Text>
@@ -54,7 +63,7 @@ export default function Account({ navigation }) {
         </View>
 
         {/* Log Out */}
-        <TouchableOpacity style={styles.logoutBtn}>
+        <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
           <Ionicons name="log-out-outline" size={20} color="#53B175" />
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
@@ -68,7 +77,6 @@ export default function Account({ navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
 
-  // Profile
   profile: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -76,7 +84,6 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     paddingBottom: 20,
   },
-
   avatar: {
     width: 64,
     height: 64,
@@ -84,42 +91,17 @@ const styles = StyleSheet.create({
     marginRight: 16,
     backgroundColor: '#eee',
   },
-
   profileInfo: { flex: 1 },
-
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-
-  name: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#181725',
-  },
-
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  name: { fontSize: 20, fontWeight: '700', color: '#181725' },
   editBtn: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 28, height: 28, borderRadius: 14,
     backgroundColor: '#F2F3F2',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center', justifyContent: 'center',
   },
+  email: { fontSize: 14, color: '#7C7C7C', marginTop: 4 },
 
-  email: {
-    fontSize: 14,
-    color: '#7C7C7C',
-    marginTop: 4,
-  },
-
-  // Menu
-  menu: {
-    marginHorizontal: 20,
-    backgroundColor: '#fff',
-  },
-
+  menu: { marginHorizontal: 20, backgroundColor: '#fff' },
   menuRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -128,24 +110,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E2E2E2',
   },
+  menuLeft: { flexDirection: 'row', alignItems: 'center' },
+  menuIcon: { marginRight: 16, width: 24 },
+  menuLabel: { fontSize: 16, color: '#181725', fontWeight: '500' },
 
-  menuLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  menuIcon: {
-    marginRight: 16,
-    width: 24,
-  },
-
-  menuLabel: {
-    fontSize: 16,
-    color: '#181725',
-    fontWeight: '500',
-  },
-
-  // Logout
   logoutBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -157,10 +125,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F3F2',
     gap: 10,
   },
-
-  logoutText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#53B175',
-  },
+  logoutText: { fontSize: 16, fontWeight: '600', color: '#53B175' },
 });

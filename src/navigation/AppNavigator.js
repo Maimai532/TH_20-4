@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from "react";
+import { View, ActivityIndicator } from "react-native";
+import { AuthContext } from '../context/AuthContext';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-// ───────── AUTH ─────────
 import SplashScreen from '../screens/SplashScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
 import SignInScreen from '../screens/SignInScreen';
@@ -14,22 +16,23 @@ import LocationScreen from '../screens/LocationScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 
-// ───────── MAIN ─────────
 import Home from '../screens/Home';
 import Explore from '../screens/Explore';
 import Beverages from '../screens/Beverages';
 import ProductDetail from '../screens/ProductDetail';
-
 import Search from '../screens/Search';
 import Filters from '../screens/Filters';
 import MyCart from '../screens/MyCart';
+import Checkout from '../screens/Checkout';
+import OrderAccepted from '../screens/OrderAccepted';
+import OrderFailed from '../screens/OrderFailed';
 import Favorites from '../screens/Favorites';
+import Account from '../screens/Account';
+import OrdersScreen from '../screens/OrdersScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
-// ───────── AUTH STACK ─────────
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -45,64 +48,55 @@ function AuthStack() {
   );
 }
 
-
-// ───────── SHOP STACK ─────────
 function ShopStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
     </Stack.Navigator>
   );
 }
 
-
-// ───────── EXPLORE STACK ─────────
 function ExploreStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Explore" component={Explore} />
+      <Stack.Screen name="ExploreScreen" component={Explore} />
       <Stack.Screen name="SearchScreen" component={Search} />
-      <Stack.Screen name="Filters" component={Filters} />
-      <Stack.Screen name="Beverages" component={Beverages} />
-      <Stack.Screen name="ProductDetail" component={ProductDetail} />
+      <Stack.Screen name="FiltersScreen" component={Filters} />
+      <Stack.Screen name="BeveragesScreen" component={Beverages} />
+      <Stack.Screen name="ProductDetailFromExplore" component={ProductDetail} />
     </Stack.Navigator>
   );
 }
 
-
-// ───────── SEARCH STACK ─────────
-function SearchStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Search" component={Search} />
-      <Stack.Screen name="Filters" component={Filters} />
-    </Stack.Navigator>
-  );
-}
-
-
-// ───────── CART STACK ─────────
 function CartStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="MyCart" component={MyCart} />
+      <Stack.Screen name="CartScreen" component={MyCart} />
+      <Stack.Screen name="Checkout" component={Checkout} />
+      <Stack.Screen name="OrderAccepted" component={OrderAccepted} />
+      <Stack.Screen name="OrderFailed" component={OrderFailed} />
     </Stack.Navigator>
   );
 }
 
-
-// ───────── FAVORITE STACK ─────────
 function FavoriteStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Favorites" component={Favorites} />
+      <Stack.Screen name="FavoritesScreen" component={Favorites} />
     </Stack.Navigator>
   );
 }
 
+function AccountStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="AccountScreen" component={Account} />
+      <Stack.Screen name="Orders" component={OrdersScreen} />
+    </Stack.Navigator>
+  );
+}
 
-// ───────── MAIN TAB ─────────
 function MainTabs() {
   return (
     <Tab.Navigator
@@ -111,17 +105,15 @@ function MainTabs() {
         tabBarActiveTintColor: '#53B175',
         tabBarInactiveTintColor: '#999',
         tabBarStyle: { height: 70, paddingBottom: 10 },
-
         tabBarIcon: ({ color }) => {
-          let icon;
-
-          if (route.name === 'Shop') icon = 'storefront-outline';
-          if (route.name === 'Explore') icon = 'search-outline';
-          if (route.name === 'Cart') icon = 'cart-outline';
-          if (route.name === 'Favourite') icon = 'heart-outline';
-          if (route.name === 'Account') icon = 'person-outline';
-
-          return <Ionicons name={icon} size={22} color={color} />;
+          const icons = {
+            Shop: 'storefront-outline',
+            Explore: 'search-outline',
+            Cart: 'cart-outline',
+            Favourite: 'heart-outline',
+            Account: 'person-outline',
+          };
+          return <Ionicons name={icons[route.name]} size={22} color={color} />;
         },
       })}
     >
@@ -129,19 +121,25 @@ function MainTabs() {
       <Tab.Screen name="Explore" component={ExploreStack} />
       <Tab.Screen name="Cart" component={CartStack} />
       <Tab.Screen name="Favourite" component={FavoriteStack} />
-      <Tab.Screen name="Account" component={SearchStack} />
+      <Tab.Screen name="Account" component={AccountStack} />
     </Tab.Navigator>
   );
 }
 
-
-// ───────── ROOT ─────────
 export default function AppNavigator() {
-  const isLoggedIn = false; // đổi true khi đã login
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+        <ActivityIndicator size="large" color="#53B175" />
+      </View>
+    );
+  }
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? <MainTabs /> : <AuthStack />}
+      {user ? <MainTabs /> : <AuthStack />}
     </NavigationContainer>
   );
 }

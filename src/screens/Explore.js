@@ -87,7 +87,7 @@ export default function Explore({ navigation, route }) {
             && activeFilters.brands.length === 0;
 
           if (isIdle) {
-            // 👉 CHƯA SEARCH / CHƯA FILTER → hiện category grid
+
             return (
               <View style={styles.categoryGrid}>
                 {categories.map((item, index) => (

@@ -6,7 +6,7 @@ export default function SplashScreen({ navigation }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace("Onboarding");
-    }, 100000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);

@@ -1,14 +1,20 @@
-import React from 'react';
-import { CartProvider } from './src/context/CartContext';
-import AppNavigator from './src/navigation/AppNavigator';
-import { FavoritesProvider } from './src/context/FavoritesContext.js';
+import React from "react";
+import { AuthProvider } from "./src/context/AuthContext";
+import { CartProvider } from "./src/context/CartContext";
+import { FavoritesProvider } from "./src/context/FavoritesContext";
+import { OrdersProvider } from "./src/context/OrdersContext";
+import AppNavigator from "./src/navigation/AppNavigator";
 
 export default function App() {
   return (
-    <FavoritesProvider>
+    <AuthProvider>
       <CartProvider>
-        <AppNavigator />
+        <FavoritesProvider>
+          <OrdersProvider>
+            <AppNavigator />
+          </OrdersProvider>
+        </FavoritesProvider>
       </CartProvider>
-    </FavoritesProvider>
+    </AuthProvider>
   );
 }

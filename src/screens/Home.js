@@ -98,7 +98,7 @@ const Section = ({ title, data, navigation, addToCart }) => (
     <View style={styles.row}>
       {data.map((item) => (
         <View key={item.id} style={styles.card}>
-          {/* Phần ảnh + tên → navigate ProductDetail */}
+     
           <TouchableOpacity
             onPress={() => navigation.navigate('ProductDetail', { product: item })}
           >
@@ -107,7 +107,7 @@ const Section = ({ title, data, navigation, addToCart }) => (
             <Text style={styles.sub}>{item.detail}</Text>
           </TouchableOpacity>
 
-          {/* Price + nút + tách riêng để không bị chặn */}
+      
           <View style={styles.bottom}>
             <Text style={styles.price}>${item.price.toFixed(2)}</Text>
             <TouchableOpacity
