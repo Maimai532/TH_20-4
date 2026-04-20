@@ -87,12 +87,20 @@ function FavoriteStack() {
     </Stack.Navigator>
   );
 }
+function LocationStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="AccountScreen" component={Account} />
+    </Stack.Navigator>
+  );
+}
 
 function AccountStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="AccountScreen" component={Account} />
       <Stack.Screen name="Orders" component={OrdersScreen} />
+      <Stack.Screen name="Location" component={LocationScreen} />
     </Stack.Navigator>
   );
 }
@@ -102,9 +110,9 @@ function MainTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: '#53B175',
+        tabBarActiveTintColor: '#c96b13',
         tabBarInactiveTintColor: '#999',
-        tabBarStyle: { height: 70, paddingBottom: 10 },
+        tabBarStyle: { height: 80, paddingBottom: 10 },
         tabBarIcon: ({ color }) => {
           const icons = {
             Shop: 'storefront-outline',
@@ -113,7 +121,7 @@ function MainTabs() {
             Favourite: 'heart-outline',
             Account: 'person-outline',
           };
-          return <Ionicons name={icons[route.name]} size={22} color={color} />;
+          return <Ionicons name={icons[route.name]} size={25} color={color} />;
         },
       })}
     >

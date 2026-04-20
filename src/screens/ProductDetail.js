@@ -9,12 +9,14 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { FavoritesContext } from '../context/FavoritesContext.js';
+import { CartContext } from '../context/CartContext';
 
 export default function ProductDetail({ route, navigation }) {
   const { product } = route.params;
   const [qty, setQty] = useState(1);
   const { toggleFavorite, isFavorite } = useContext(FavoritesContext);
   const liked = isFavorite(product.id);
+  const { addToCart } = useContext(CartContext);
 
   return (
     <ScrollView style={styles.container}>
@@ -104,14 +106,17 @@ export default function ProductDetail({ route, navigation }) {
           <Text style={styles.sectionTitle}>Review</Text>
 
           <View style={styles.row}>
-            <Text style={{ color: '#FF6C44' }}>★★★★★</Text>
+            <Text style={{ color: '#ebd007' }}>★★★★★</Text>
             <Ionicons name="chevron-forward" size={18} />
           </View>
         </View>
       </View>
 
       {/* BUTTON */}
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity 
+        style={styles.btn}
+        onPress={() => addToCart({ ...product, qty })}
+      >
         <Text style={styles.btnText}>Add To Basket</Text>
       </TouchableOpacity>
 
@@ -198,7 +203,7 @@ header: {
 
   plus: {
     fontSize: 20,
-    color: '#53B175',
+    color: '#354d6a',
     paddingHorizontal: 10
   },
 
@@ -256,7 +261,7 @@ header: {
   },
 
   btn: {
-    backgroundColor: '#53B175',
+    backgroundColor: '#354d6a',
     padding: 18,
     borderRadius: 18,
     alignItems: 'center',

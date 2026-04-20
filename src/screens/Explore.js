@@ -20,14 +20,14 @@ export default function Explore({ navigation, route }) {
   const [activeFilters, setActiveFilters] = useState({ categories: [], brands: [] });
   const [isFocused, setIsFocused] = useState(false);
 
-  // Nhận filter trả về từ Filters screen
+
   useEffect(() => {
     if (route?.params?.filters) {
       setActiveFilters(route.params.filters);
     }
   }, [route?.params?.filters]);
 
-  // 🔍 SEARCH + FILTER
+
   useEffect(() => {
     const keyword = query.trim().toLowerCase();
 
@@ -55,10 +55,8 @@ export default function Explore({ navigation, route }) {
     <View style={styles.container}>
       <Text style={styles.title}>Find Products</Text>
 
-      {/* 🔍 SEARCH + FILTER */}
       <View style={styles.searchRow}>
         <View style={[styles.searchBox, isFocused && styles.searchBoxFocused]}>
-          <Text style={styles.searchIcon}>🔍</Text>
           <TextInput
             style={styles.searchInput}
             placeholder="Search Store"
@@ -69,7 +67,7 @@ export default function Explore({ navigation, route }) {
           />
         </View>
 
-        {/* ⚙ FILTER */}
+
         <TouchableOpacity
           style={styles.filterBtn}
           onPress={() => navigation.navigate('Filters', { returnScreen: 'Explore' })}
@@ -80,7 +78,7 @@ export default function Explore({ navigation, route }) {
 
       <ScrollView showsVerticalScrollIndicator={false}>
 
-        {/* Xác định trạng thái: idle = chưa search và chưa filter */}
+
         {(() => {
           const isIdle = query.trim() === ''
             && activeFilters.categories.length === 0
@@ -109,7 +107,7 @@ export default function Explore({ navigation, route }) {
           }
 
           if (results.length === 0) {
-            // ❌ KHÔNG CÓ KẾT QUẢ
+
             return (
               <View style={styles.emptyContainer}>
                 <Text style={styles.emptyIcon}>🔍</Text>
@@ -117,8 +115,6 @@ export default function Explore({ navigation, route }) {
               </View>
             );
           }
-
-          // ✅ CÓ KẾT QUẢ
           return (
             <View style={styles.resultGrid}>
               {results.map((item) => (
@@ -161,7 +157,7 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
 
-  // SEARCH + FILTER
+ 
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -183,11 +179,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#d5f2d3',
   },
 
-  searchIcon: {
-    marginRight: 8,
-    color: '#888'
-  },
-
   searchInput: {
     flex: 1,
     fontSize: 15,
@@ -207,7 +198,7 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
 
-  // CATEGORY
+
   categoryGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',

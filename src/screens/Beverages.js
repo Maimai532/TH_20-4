@@ -7,8 +7,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { beverages } from '../data/data';
 import { CartContext } from '../context/CartContext';
 
-
-
 export default function Beverages({ navigation }) {
   const { addToCart } = useContext(CartContext);
 

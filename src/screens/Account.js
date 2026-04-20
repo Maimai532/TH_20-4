@@ -7,9 +7,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../context/AuthContext';
 
 const MENU_ITEMS = [
-  { icon: 'receipt-outline',            label: 'Orders',screen: 'Orders' },
+  { icon: 'receipt-outline',            label: 'Orders',           screen: 'Orders' },
   { icon: 'person-outline',             label: 'My Details',       screen: null },
-  { icon: 'location-outline',           label: 'Delivery Address', screen: null },
+  { icon: 'location-outline',           label: 'Delivery Address', screen: 'Location' },
   { icon: 'card-outline',               label: 'Payment Methods',  screen: null },
   { icon: 'pricetag-outline',           label: 'Promo Code',       screen: null },
   { icon: 'notifications-outline',      label: 'Notifications',    screen: null },
@@ -37,7 +37,7 @@ export default function Account({ navigation }) {
             <View style={styles.nameRow}>
               <Text style={styles.name}>{user?.name || 'User'}</Text>
               <TouchableOpacity style={styles.editBtn}>
-                <Ionicons name="pencil" size={14} color="#53B175" />
+                <Ionicons name="pencil" size={14} color="#c96b13" />
               </TouchableOpacity>
             </View>
             <Text style={styles.email}>{user?.email || ''}</Text>
@@ -54,7 +54,7 @@ export default function Account({ navigation }) {
               onPress={() => item.screen && navigation.navigate(item.screen)}
             >
               <View style={styles.menuLeft}>
-                <Ionicons name={item.icon} size={22} color="#181725" style={styles.menuIcon} />
+                <Ionicons name={item.icon} size={22} color="#252417" style={styles.menuIcon} />
                 <Text style={styles.menuLabel}>{item.label}</Text>
               </View>
               <Ionicons name="chevron-forward" size={18} color="#181725" />
@@ -125,5 +125,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F3F2',
     gap: 10,
   },
-  logoutText: { fontSize: 16, fontWeight: '600', color: '#53B175' },
+  logoutText: { fontSize: 16, fontWeight: '600', color: '354d6a' },
 });

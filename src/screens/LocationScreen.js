@@ -50,7 +50,7 @@ export default function LocationScreen({ navigation }) {
       {/* BUTTON */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate("AccountScreen")}
       >
         <Text style={styles.btnText}>Submit</Text>
       </TouchableOpacity>

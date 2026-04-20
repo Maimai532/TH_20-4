@@ -12,8 +12,19 @@ export default function LoginScreen({ navigation }) {
       Alert.alert("Thông báo", "Vui lòng nhập email và mật khẩu");
       return;
     }
-    // ✅ Nhập gì cũng login được — lưu vào SecureStore, auto login lần sau
-    await login({ name: email, email, token: "fake-token" });
+
+    Alert.alert(
+      "Thành công",
+      "Đăng nhập thành công ",
+      [
+        {
+          text: "OK",
+          onPress: async () => {
+            await login({ name: email, email, token: "fake-token" });
+          }
+        }
+      ]
+    );
   };
 
   return (
@@ -64,8 +75,8 @@ const styles = StyleSheet.create({
   title: { fontSize: 26, fontWeight: "700", marginBottom: 5 },
   sub: { color: "#777", marginBottom: 30 },
   input: { borderBottomWidth: 1, borderColor: "#ddd", paddingVertical: 10, fontSize: 16, marginBottom: 15 },
-  button: { backgroundColor: "#53B175", padding: 18, borderRadius: 15, alignItems: "center", marginTop: 10 },
+  button: { backgroundColor: "#354d6a", padding: 18, borderRadius: 15, alignItems: "center", marginTop: 10 },
   btnText: { color: "#fff", fontWeight: "600", fontSize: 16 },
   bottom: { flexDirection: "row", justifyContent: "center", marginTop: 20 },
-  link: { color: "#53B175", fontWeight: "600" },
+  link: { color: "#0c92eb", fontWeight: "600" },
 });

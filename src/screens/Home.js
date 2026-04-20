@@ -13,7 +13,6 @@ import { CartContext } from '../context/CartContext';
 
 export default function Home({ navigation }) {
   const { addToCart } = useContext(CartContext);
-
   const fruits = home.filter(i => i.category === 'Fruits');
   const vegetables = home.filter(i => i.category === 'Vegetables');
   const meat = home.filter(i => i.category === 'Meat');
@@ -33,7 +32,7 @@ export default function Home({ navigation }) {
       />
 
       {/* LOCATION */}
-      <Text style={styles.location}>Dhaka, Banassre</Text>
+      <Text style={styles.location}>Nguyễn Nhật Mai - 23810301266</Text>
 
       {/* SEARCH */}
       <View style={styles.search}>
@@ -86,8 +85,6 @@ export default function Home({ navigation }) {
   );
 }
 
-
-
 const Section = ({ title, data, navigation, addToCart }) => (
   <>
     <View style={styles.sectionHeader}>
@@ -124,7 +121,6 @@ const Section = ({ title, data, navigation, addToCart }) => (
 );
 
 
-// 🎨 STYLE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -172,7 +168,7 @@ const styles = StyleSheet.create({
   },
 
   seeAll: {
-    color: '#53B175'
+    color: '#d76400'
   },
 
   row: {
@@ -186,7 +182,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: '#7992b1',
     padding: 12,
     marginVertical: 8
   },
@@ -220,7 +216,7 @@ const styles = StyleSheet.create({
   },
 
   plus: {
-    backgroundColor: '#53B175',
+    backgroundColor: '#354d6a',
     width: 34,
     height: 34,
     borderRadius: 12,
