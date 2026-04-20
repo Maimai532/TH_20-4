@@ -1,11 +1,11 @@
 # Nguyễn Nhật Mai_23810310266
 
 ![alt text](MSSV_01_Login.png)
-![alt text](Logout.png)
-![alt text](oderAccepted.png)
-![alt text](MyOders.png)
-![alt text](MyCart.png)
-![alt text](thaydoi_sl_sp.png)
+![alt text](MSSV_02_Logout.png)
+![alt text](MSSV_05_Oder-thanhcong.png)
+![alt text](MSSV_04_Donhang.png)
+![alt text](MSSV_03_giohang.png)
+![alt text](MSSV_06_thaydoi_sl.png)
 
 
 <video controls src="Demo-Nguyễn Nhật Mai_23810310266.mov" title="Title"></video>
